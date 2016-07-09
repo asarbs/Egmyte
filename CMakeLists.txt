@@ -11,13 +11,13 @@ INCLUDE_DIRECTORIES(project)
 PROJECT(egnyte)
 
 
-ADD_LIBRARY(egnyte_lib project/Timer.cpp project/Timer.hpp)
+ADD_LIBRARY(egnyte_lib project/TimerV1.cpp project/TimerV1.hpp project/TimerV0.cpp project/TimerV0.hpp)
 ADD_EXECUTABLE(egnyte project/main.cpp)
 TARGET_LINK_LIBRARIES(egnyte egnyte_lib)
 
 
 ADD_EXECUTABLE(runUnitTests
-               project/test_Timer.cpp
-               project/test_Timer.cpp)
+               project/test_TimerV1.cpp
+               project/test_TimerV0.cpp)
 TARGET_LINK_LIBRARIES(runUnitTests gtest gtest_main)
 TARGET_LINK_LIBRARIES(runUnitTests egnyte_lib)

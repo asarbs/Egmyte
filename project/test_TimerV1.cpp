@@ -3,29 +3,28 @@
 //
 
 #include <gtest/gtest.h>
-#include <Timer.hpp>
+#include <TimerV1.hpp>
 
-
-TEST(Timer, runSimpleTimer)
+TEST(TimerV1, runSimpleTimer)
 {
   int x = 10;
   std::function<void()> f_foo = [&x]() -> void
   { x += 5; };
   std::chrono::milliseconds m(5);
-  Timer t(f_foo, m);
+  TimerV1 t(f_foo, m);
   t.start();
   EXPECT_EQ(10, x);
   std::this_thread::sleep_for(std::chrono::milliseconds(20));
   EXPECT_EQ(15, x);
 }
 
-TEST(Timer, stopTimer)
+TEST(TimerV1, stopTimer)
 {
   int x = 10;
   std::function<void()> f_foo = [&x]() -> void
   { x += 5; };
   std::chrono::milliseconds m(15);
-  Timer t(f_foo, m);
+  TimerV1 t(f_foo, m);
   t.start();
   EXPECT_EQ(10, x);
   std::this_thread::sleep_for(std::chrono::milliseconds(5));
@@ -35,13 +34,13 @@ TEST(Timer, stopTimer)
   EXPECT_EQ(10, x);
 }
 
-TEST(Timer, reRunTimer)
+TEST(TimerV1, reRunTimer)
 {
   int x = 10;
   std::function<void()> f_foo = [&x]() -> void
   { x += 5; };
   std::chrono::milliseconds m(15);
-  Timer t(f_foo, m, true);
+  TimerV1 t(f_foo, m, true);
   t.start();
   EXPECT_EQ(10, x);
   std::this_thread::sleep_for(std::chrono::milliseconds(22));
@@ -50,13 +49,13 @@ TEST(Timer, reRunTimer)
   EXPECT_EQ(30, x);
 }
 
-TEST(Timer, stopReRunTimer)
+TEST(TimerV1, stopReRunTimer)
 {
   int x = 10;
   std::function<void()> f_foo = [&x]() -> void
   { x += 5; };
   std::chrono::milliseconds m(15);
-  Timer t(f_foo, m, true);
+  TimerV1 t(f_foo, m, true);
   t.start();
   EXPECT_EQ(10, x);
   std::this_thread::sleep_for(std::chrono::milliseconds(22));
@@ -64,3 +63,15 @@ TEST(Timer, stopReRunTimer)
   t.stop();
   EXPECT_EQ(20, x);
 }
+
+void startTimer(int& outParam);
+
+TEST(TimerV1, startInSeparateFunction)
+{
+  int result = 10;
+  startTimer(result);
+  EXPECT_EQ(10, result);
+  std::this_thread::sleep_for(std::chrono::milliseconds(22));
+  EXPECT_EQ(15, result);
+}
+

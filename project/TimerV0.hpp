@@ -1,21 +1,21 @@
 //
-// Created by asar on 07.07.16.
+// Created by asar on 09.07.16.
 //
 
-#ifndef EGNYTE_TIMER_HPP
-#define EGNYTE_TIMER_HPP
+#ifndef EGNYTE_TIMERV0_HPP
+#define EGNYTE_TIMERV0_HPP
 
 #include <iostream>
-#include <functional>
 #include <chrono>
 #include <thread>
-#include <iostream>
 
-class Timer
+
+class TimerV0
 {
 public:
-  Timer(std::function<void()> &fun, std::chrono::milliseconds d, bool reRun = false) : _fun(fun), _duration(d),
-                                                                                       _run(true), _reRun(reRun)
+  TimerV0(void (*fun)(), std::chrono::milliseconds d, bool reRun = false) : _fun(fun), _duration(d),
+    _run(true), _reRun(reRun),
+    _error(false)
   { }
 
   void start()
@@ -45,18 +45,25 @@ public:
     _run = false;
   }
 
-  ~Timer()
+  bool isValid()
+  {
+    return  _error;
+  }
+
+  TimerV0( const TimerV0& ) = delete;
+
+  ~TimerV0()
   { }
+
 
 private:
-  Timer() : _duration(0), _run(false), _reRun(false)
-  { }
 
-  std::function<void()> _fun;
+  void (*_fun)();
   const std::chrono::milliseconds _duration;
   bool _run;
   bool _reRun;
+  bool _error;
 };
 
 
-#endif //EGNYTE_TIMER_HPP
+#endif //EGNYTE_TIMERV0_HPP
