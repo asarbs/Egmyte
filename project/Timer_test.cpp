@@ -17,7 +17,7 @@ void goo(int x, int* out)
   //std::cerr << "p=" << out << " *out=" << (*out) << "=" << "(*out)=" << tmp << "* x=" << x << std::endl;
 }
 
-TEST(TimerV2, runSimpleTimer)
+TEST(Timer, runSimpleTimer)
 {
   std::chrono::milliseconds m(5);
   Timer<std::function<void (int, int*)>, int, int*> timerV2(&foo, m);
@@ -31,7 +31,7 @@ TEST(TimerV2, runSimpleTimer)
   EXPECT_EQ(25, result) ;
 }
 
-TEST(TimerV2, stopTimer)
+TEST(Timer, stopTimer)
 {
   std::chrono::milliseconds m(15);
 
@@ -46,7 +46,7 @@ TEST(TimerV2, stopTimer)
   EXPECT_EQ(10, result);
 }
 
-TEST(TimerV2, reRunTimer)
+TEST(Timer, reRunTimer)
 {
   std::chrono::seconds m(2);
   Timer<std::function<void (int, int*)>, int, int*> t(&goo, m, true);
@@ -59,7 +59,7 @@ TEST(TimerV2, reRunTimer)
   EXPECT_EQ(31250, result);
 }
 
-TEST(TimerV2, stopReRunTimer)
+TEST(Timer, stopReRunTimer)
 {
   std::chrono::seconds m(2);
   Timer<std::function<void (int, int*)>, int, int*> t(&goo, m, true);
@@ -73,19 +73,4 @@ TEST(TimerV2, stopReRunTimer)
   EXPECT_EQ(250, result1);
 }
 
-void startTimer(int &outPut)
-{
-  std::chrono::seconds m(2);
-  Timer<std::function<void (int, int*)>, int, int*> t(&goo, m);
-  t.start(5, &outPut);
-}
-
-TEST(TimerV2, startInSeparateFunction)
-{
-  int result = 10;
-  startTimer(result);
-  EXPECT_EQ(10, result);
-  std::this_thread::sleep_for(std::chrono::seconds(4));
-  EXPECT_EQ(50, result);
-}
 

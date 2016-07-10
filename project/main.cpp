@@ -1,11 +1,24 @@
 #include <iostream>
 
-using namespace std;
+#include <Timer.hpp>
+
+void foo(int x, int* out)
+{
+  *out = x * x;
+}
 
 int main()
 {
-  cout << "Hello, World!" << endl;
-  return 0;
+  std::chrono::seconds m(5);
+  Timer<std::function<void (int, int*)>, int, int*> timerV2(&foo, m);
+  int result = 155;
+  timerV2.start(5, &result);
+  std::chrono::seconds m1(1);
+  while (!timerV2.isFinished())
+  {
+    std::this_thread::sleep_for(m1);
+  }
+  return 25 == result;
 }
 
 

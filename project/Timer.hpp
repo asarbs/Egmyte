@@ -14,7 +14,7 @@ template <class callable, class... arguments>
 class Timer
 {
 public:
-  Timer(callable&& f, std::chrono::milliseconds d, bool reRun = false):_callable(f), _duration(d), _reRun(reRun), _done(false)
+  Timer(callable&& f, std::chrono::milliseconds d, bool reRun = false):_callable(f), _duration(d),_run(true), _reRun(reRun), _done(false)
   {}
 
   void start(arguments&&... args)
@@ -29,6 +29,7 @@ public:
                     std::this_thread::sleep_for(_duration);
                     if (!_run)
                     {
+                      _done = true;
                       return;
                     }
                     task();
